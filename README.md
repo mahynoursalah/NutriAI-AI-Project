@@ -1,5 +1,3 @@
-أكيد، دي نسخة README جاهزة للنسخ واللصق على GitHub، ومشمولة فيها كلمة RAG بشكل واضح ومهني:
-
 # NutriAI
 
 NutriAI is an AI-powered nutrition and wellness web application designed to help users make smarter dietary decisions through intelligent assistance. The project was developed as an RAG-inspired solution that combines modern web development with OpenAI integration to provide personalized guidance for users interested in improving their health and lifestyle.
