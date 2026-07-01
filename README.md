@@ -32,4 +32,3 @@ This makes the application more than a simple tracking tool—it becomes an inte
 - OpenAI API
 - SQL Server / Local Database
 
-لو تحب، أقدر كمان أجهز لك نسخة أقوى وأقرب لأسلوب المشاريع التقنية على ة بالكامل
