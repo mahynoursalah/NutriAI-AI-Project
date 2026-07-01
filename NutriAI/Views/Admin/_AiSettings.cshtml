@@ -1,0 +1,55 @@
+@model NutriAI.ViewModels.Admin.AiSettingsViewModel
+
+<div class="card-nutri mb-4 fade-in" id="ai-settings">
+    <h3 class="h5 mb-3"><i class="fas fa-robot me-2 text-success"></i>AI Settings</h3>
+    <p class="small-text text-muted mb-3">Configure OpenAI credentials used for meal analysis, plans, and reports.</p>
+
+    @if (TempData["AiSettingsSuccess"] != null)
+    {
+        <div class="alert alert-success py-2">@TempData["AiSettingsSuccess"]</div>
+    }
+
+    <form asp-controller="Admin" asp-action="AiSettings" method="post" id="aiSettingsForm">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="ApiKey" class="form-label"></label>
+            <input asp-for="ApiKey" class="form-control form-control-nutri" type="password" autocomplete="off"
+                   placeholder="@(string.IsNullOrEmpty(Model.ApiKeyLastFour) ? "sk-..." : $"Enter new key to replace ****{Model.ApiKeyLastFour}")" />
+            @if (!string.IsNullOrEmpty(Model.ApiKeyLastFour))
+            {
+                <div class="form-text">Current key ends with <strong>****@Model.ApiKeyLastFour</strong>. Leave blank to keep the existing key.</div>
+            }
+            <span asp-validation-for="ApiKey" class="text-danger small-text"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="SelectedModel" class="form-label"></label>
+            <select asp-for="SelectedModel" class="form-select form-control-nutri"
+                    asp-items="@(new SelectList(Model.AvailableModels, Model.SelectedModel))"></select>
+            <span asp-validation-for="SelectedModel" class="text-danger small-text"></span>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+            <button type="submit" class="btn btn-nutri">
+                <i class="fas fa-save me-1"></i>Save AI Settings
+            </button>
+            <button type="button" class="btn btn-outline-nutri" id="btnTestAiSettings">
+                <i class="fas fa-plug me-1"></i>Test connection
+            </button>
+        </div>
+        <p class="form-text mt-2 mb-0">Save verifies the selected model with OpenAI. Test checks the last saved settings.</p>
+    </form>
+</div>
+
+<script>
+    document.getElementById('btnTestAiSettings')?.addEventListener('click', async () => {
+        try {
+            const data = await NutriAI.fetchJson('/Admin/TestAiSettings', { method: 'POST' });
+            NutriAI.showToast(data.message, data.success ? 'success' : 'danger');
+        } catch (err) {
+            NutriAI.showToast(err.message || 'Connection test failed.', 'danger');
+        }
+    });
+</script>
